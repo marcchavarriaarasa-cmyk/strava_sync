@@ -1,4 +1,4 @@
-<!-- ID: 2855191927 -->
+Los cambios en <!-- ID: 2855191927 -->
 El 10/11/2019 realicé una Run de 1.4km en 8 minutos con 0m de desnivel. Mi ritmo medio fue de 5:56 min/km. Sensación: Moderado (6/10).
 
 <!-- ID: 2872358507 -->
@@ -243,4 +243,7 @@ El 02/02/2026 realicé una Run de 15.9km en 1h 37min con 63m de desnivel. Mi rit
 
 <!-- ID: 17296365366 -->
 El 05/02/2026 realicé una Run de 10.0km en 54 minutos con 60m de desnivel. Mi ritmo medio fue de 5:28 min/km. Cadencia media: 149 ppm. Sensación: Moderado (5/10).
+
+<!-- ID: 17319292738 -->
+El 07/02/2026 realicé una Run de 11.0km en 58 minutos con 72m de desnivel. Mi ritmo medio fue de 5:19 min/km. Cadencia media: 148 ppm. Sensación: Moderado (6/10).
 

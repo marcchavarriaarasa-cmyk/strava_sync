@@ -177,41 +177,61 @@ def format_activity(activity):
 
     return description
 
-def get_existing_ids(filepath):
-    """Reads existing activity IDs from the file to avoid duplicates."""
-    if not os.path.exists(filepath):
-        return set()
+def parse_activities_file(filepath):
+    """
+    Parses the file into a header and a dictionary of activities.
+    Returns: (header_content, activities_dict)
+    activities_dict is an OrderedDict: { 'activity_id': 'description_text' }
+    """
+    from collections import OrderedDict
+    import re
+
+    activities = OrderedDict()
+    header_lines = []
     
-    ids = set()
+    if not os.path.exists(filepath):
+        return "", activities
+
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
-            for line in f:
-                if line.strip().startswith('<!-- ID:'):
-                    # Extract ID from "<!-- ID: 12345 -->"
-                    import re
-                    match = re.search(r'ID:\s*(\d+)', line)
-                    if match:
-                        ids.add(match.group(1))
+            content = f.read()
+            
+        # Split by the ID marker
+        # We need to capture the ID to use it as key
+        # Pattern: <!-- ID: 12345 -->
+        # We use a lookahead or just standard split and process chunks
+        
+        # Regex to find all ID markers
+        # We can split the text by the marker. 
+        # re.split('<!-- ID: (\d+) -->', content) will return:
+        # [header, id1, desc1, id2, desc2, ...]
+        parts = re.split(r'<!-- ID: (\d+) -->', content)
+        
+        # First part is the header (text before the first ID)
+        header = parts[0] if parts else ""
+        
+        # The rest come in pairs: ID, Description
+        for i in range(1, len(parts), 2):
+            act_id = parts[i]
+            desc = parts[i+1].strip()
+            activities[act_id] = desc
+
+        return header, activities
+
     except IOError as e:
         print(f"Error reading existing file: {e}")
-    return ids
+        return "", activities
 
 def save_activities(activities, access_token):
-    """Saves new activities to the file."""
-    existing_ids = get_existing_ids(OUTPUT_FILE)
+    """Saves activities to the file, updating existing ones and appending new ones."""
+    header, existing_activities = parse_activities_file(OUTPUT_FILE)
     
-    activities_to_add = []
-
+    # Track if we made any changes to avoid unnecessary writes
+    updates_made = False
+    
     # Process activities
-    # Use reversed() if we want to add oldest of the batch first
-    # But if we fetch multiple pages (newest to oldest), resolving order is tricky.
-    # We'll just process them as they come (newest first usually) and append.
-    # Or reverse the whole list?
-    # Strava API returns newest first. Page 1 = newest.
-    # If we fetch all, we have [Newest ... Oldest].
-    # If we reverse, we get [Oldest ... Newest].
-    # That's better for a chronological log.
-    
+    # We process reversed (oldest of the fetch first) so that if we are appending
+    # new consecutive activities, they appear in order.
     for activity in reversed(activities):
         # Filter out WeightTraining
         act_type = activity.get('sport_type', activity.get('type', 'Unknown'))
@@ -219,46 +239,70 @@ def save_activities(activities, access_token):
             continue
 
         act_id = str(activity.get('id'))
-        if act_id not in existing_ids:
-            
-            # Rate limit check specifically for detail fetch
-            # We check if we have budget for one more call
-            if API_CALLS >= MAX_API_CALLS:
-                print(f"Rate limit safety cap reached ({API_CALLS}). Stopping sync for now.")
-                print("Run the script again in 15 minutes to continue.")
-                break
+        
+        # Rate limit check for optimization
+        # Since we ALWAYS fetch details now to update descriptions (like RPE),
+        # we need to be careful.
+        # But wait, checking for updates requires fetching details, because the summary
+        # doesn't have RPE.
+        
+        # Optimization: Only fetch details if we need to.
+        # But we don't know if we need to update without fetching details first to compare.
+        # Strava limit is generous enough for manual daily syncs (10 activities * 1 = 10 calls).
+        # Daily limit is 1000. 15-min is 100.
+        # If we fetch 10 recent activities, that's 10 detail calls. Safe.
+        
+        if API_CALLS >= MAX_API_CALLS:
+            print(f"Rate limit safety cap reached ({API_CALLS}). Stopping sync for now.")
+            break
 
-            # Fetch details for RPE if not present (it won't be in summary)
-            # We already have summary, let's clone it or just update it
-            
-            print(f"Fetching details for new activity {act_id}...")
-            detail = get_activity_detail(act_id, access_token)
-            
-            # Use detail if successful, otherwise fallback to summary
-            # We merge detail into activity so we keep any summary fields that might be useful (though detail usually has all)
-            full_activity = activity.copy()
-            if detail:
-                full_activity.update(detail)
-            
-            description = format_activity(full_activity)
-            activities_to_add.append((act_id, description))
-            existing_ids.add(act_id) # Update local set to preventing dupes in same batch
-            
-            # Sleep briefly to respect rate limits if syncing many
-            time.sleep(1)
+        # Check if we already have it to decide on logging
+        is_update = act_id in existing_activities
+        
+        # Fetch details to get full data (RPE, etc.)
+        # Only print if it's new, to avoid spam, or finding changes?
+        # Let's print fetching...
+        if not is_update:
+             print(f"Fetching details for new activity {act_id}...")
+        else:
+             print(f"Checking updates for activity {act_id}...")
 
-    if not activities_to_add:
-        print("No new activities to sync.")
+        detail = get_activity_detail(act_id, access_token)
+        
+        full_activity = activity.copy()
+        if detail:
+            full_activity.update(detail)
+        
+        new_description = format_activity(full_activity)
+        
+        if is_update:
+            # Check if description changed
+            old_description = existing_activities[act_id]
+            if old_description != new_description:
+                print(f"  -> Updating activity {act_id}.")
+                existing_activities[act_id] = new_description
+                updates_made = True
+            else:
+                pass # Unchanged
+        else:
+            print(f"  -> Adding new activity {act_id}.")
+            existing_activities[act_id] = new_description
+            updates_made = True
+            
+        # Sleep briefly
+        time.sleep(1)
+
+    if not updates_made:
+        print("No changes detected.")
         return
 
     try:
-        with open(OUTPUT_FILE, 'a', encoding='utf-8') as f:
-            for act_id, description in activities_to_add:
+        with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
+            f.write(header)
+            for act_id, description in existing_activities.items():
                 f.write(f"<!-- ID: {act_id} -->\n")
                 f.write(f"{description}\n\n")
-                # Print only first few characters of description to avoid spam
-                # print(f"Added activity: {description[:50]}...")
-        print(f"Synced {len(activities_to_add)} new activities.")
+        print("File updated successfully.")
                 
     except IOError as e:
         print(f"Error writing to file: {e}")
