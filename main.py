@@ -1,6 +1,7 @@
 import requests
 import os
 import time
+import argparse
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -34,18 +35,40 @@ def get_access_token():
         print(f"Error refreshing token: {e}")
         return None
 
-def get_recent_activities(access_token, limit=10):
-    """Fetches the last N activities from Strava."""
+def get_activities(access_token, fetch_all=False, limit=10):
+    """
+    Fetches activities from Strava.
+    If fetch_all is True, paginates through all history.
+    Otherwise, fetches the most recent 'limit' activities.
+    """
     headers = {'Authorization': f"Bearer {access_token}"}
-    params = {'per_page': limit}
+    activities = []
+    page = 1
+    per_page = 200 if fetch_all else limit
     
-    try:
-        response = requests.get(f"{API_URL}/athlete/activities", headers=headers, params=params)
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching activities: {e}")
-        return []
+    while True:
+        params = {'per_page': per_page, 'page': page}
+        try:
+            print(f"Fetching page {page}...")
+            response = requests.get(f"{API_URL}/athlete/activities", headers=headers, params=params)
+            response.raise_for_status()
+            batch = response.json()
+            
+            if not batch:
+                break
+                
+            activities.extend(batch)
+            
+            if not fetch_all:
+                break
+                
+            page += 1
+            
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching activities on page {page}: {e}")
+            break
+            
+    return activities
 
 def format_pace(seconds, distance_km):
     """Calculates pace in min/km."""
@@ -101,15 +124,10 @@ def get_existing_ids(filepath):
             for line in f:
                 if line.strip().startswith('<!-- ID:'):
                     # Extract ID from "<!-- ID: 12345 -->"
-                    parts = line.strip().split()
-                    if len(parts) >= 3:
-                        # The ID is the 3rd element (index 2) -> "<!--", "ID:", "12345", "-->"
-                        # Wait, split by space: ['<!--', 'ID:', '12345', '-->'] -> index 2 is correct
-                        # But let's be safer with regex just in case
-                        import re
-                        match = re.search(r'ID:\s*(\d+)', line)
-                        if match:
-                            ids.add(match.group(1))
+                    import re
+                    match = re.search(r'ID:\s*(\d+)', line)
+                    if match:
+                        ids.add(match.group(1))
     except IOError as e:
         print(f"Error reading existing file: {e}")
     return ids
@@ -118,16 +136,24 @@ def save_activities(activities):
     """Saves new activities to the file."""
     existing_ids = get_existing_ids(OUTPUT_FILE)
     
-    new_activities_count = 0
     activities_to_add = []
 
     # Process activities
-    # API returns newest first. We want to check all.
-    # If we append, we might want chronological order? 
-    # Let's just process them.
-    
     # Use reversed() if we want to add oldest of the batch first
+    # But if we fetch multiple pages (newest to oldest), resolving order is tricky.
+    # We'll just process them as they come (newest first usually) and append.
+    # Or reverse the whole list?
+    # Strava API returns newest first. Page 1 = newest.
+    # If we fetch all, we have [Newest ... Oldest].
+    # If we reverse, we get [Oldest ... Newest].
+    # That's better for a chronological log.
+    
     for activity in reversed(activities):
+        # Filter out WeightTraining
+        act_type = activity.get('sport_type', activity.get('type', 'Unknown'))
+        if act_type == "WeightTraining":
+            continue
+
         act_id = str(activity.get('id'))
         if act_id not in existing_ids:
             description = format_activity(activity)
@@ -143,13 +169,18 @@ def save_activities(activities):
             for act_id, description in activities_to_add:
                 f.write(f"<!-- ID: {act_id} -->\n")
                 f.write(f"{description}\n\n")
-                print(f"Added activity: {description[:50]}...")
+                # Print only first few characters of description to avoid spam
+                # print(f"Added activity: {description[:50]}...")
         print(f"Synced {len(activities_to_add)} new activities.")
                 
     except IOError as e:
         print(f"Error writing to file: {e}")
 
 def main():
+    parser = argparse.ArgumentParser(description="Strava Activity Sync")
+    parser.add_argument("--all", action="store_true", help="Fetch all historical activities (pagination)")
+    args = parser.parse_args()
+
     print("Starting Strava Sync...")
     
     if not all([CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN]):
@@ -159,7 +190,7 @@ def main():
     access_token = get_access_token()
     if access_token:
         print("Authentication successful.")
-        activities = get_recent_activities(access_token)
+        activities = get_activities(access_token, fetch_all=args.all)
         if activities:
             print(f"Fetched {len(activities)} activities.")
             save_activities(activities)
