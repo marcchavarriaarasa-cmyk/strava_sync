@@ -17,6 +17,10 @@ AUTH_URL = "https://www.strava.com/oauth/token"
 API_URL = "https://www.strava.com/api/v3"
 OUTPUT_FILE = "entrenamientos_contexto.txt"
 
+# Rate Limit Safety
+API_CALLS = 0
+MAX_API_CALLS = 80
+
 def get_access_token():
     """Refreshes the access token using the refresh token."""
     payload = {
@@ -41,16 +45,22 @@ def get_activities(access_token, fetch_all=False, limit=10):
     If fetch_all is True, paginates through all history.
     Otherwise, fetches the most recent 'limit' activities.
     """
+    global API_CALLS
     headers = {'Authorization': f"Bearer {access_token}"}
     activities = []
     page = 1
     per_page = 200 if fetch_all else limit
     
     while True:
+        if API_CALLS >= MAX_API_CALLS:
+            print(f"Rate limit safety cap reached ({API_CALLS}). Stopping fetch.")
+            break
+
         params = {'per_page': per_page, 'page': page}
         try:
             print(f"Fetching page {page}...")
             response = requests.get(f"{API_URL}/athlete/activities", headers=headers, params=params)
+            API_CALLS += 1
             response.raise_for_status()
             batch = response.json()
             
@@ -69,6 +79,33 @@ def get_activities(access_token, fetch_all=False, limit=10):
             break
             
     return activities
+
+def get_activity_detail(activity_id, access_token):
+    """Fetches detailed activity data to get fields like perceived_exertion."""
+    global API_CALLS
+    headers = {'Authorization': f"Bearer {access_token}"}
+    try:
+        response = requests.get(f"{API_URL}/activities/{activity_id}", headers=headers)
+        API_CALLS += 1
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching detail for {activity_id}: {e}")
+        return None
+
+def get_rpe_description(rpe):
+    """Maps RPE value (1-10) to a text description."""
+    if not rpe:
+        return None
+    try:
+        val = float(rpe)
+        if val <= 3: return "Suave"
+        if val <= 6: return "Moderado"
+        if val <= 8: return "Duro"
+        if val <= 9: return "Muy duro"
+        return "Máximo"
+    except (ValueError, TypeError):
+        return None
 
 def format_pace(seconds, distance_km):
     """Calculates pace in min/km."""
@@ -89,6 +126,10 @@ def format_activity(activity):
     distance_meters = activity.get('distance', 0)
     moving_time_seconds = activity.get('moving_time', 0)
     elevation = activity.get('total_elevation_gain', 0)
+    
+    # New fields
+    avg_cadence = activity.get('average_cadence')
+    perceived_exertion = activity.get('perceived_exertion')
     
     # Conversions
     distance_km = distance_meters / 1000
@@ -111,7 +152,30 @@ def format_activity(activity):
     # Calculate pace
     pace_str = format_pace(moving_time_seconds, distance_km)
 
-    return f"El {formatted_date} realicé una {type_} de {distance_km:.1f}km en {time_str} con {elevation:.0f}m de desnivel. Mi ritmo medio fue de {pace_str} min/km."
+    # Base description
+    description = f"El {formatted_date} realicé una {type_} de {distance_km:.1f}km en {time_str} con {elevation:.0f}m de desnivel. Mi ritmo medio fue de {pace_str} min/km."
+    
+    # Add Cadence
+    # For running (Run), Strava API returns 2x steps per minute usually, or sometimes steps/min directly?
+    # Actually for running, 'average_cadence' in API is often full steps per minute (e.g. 170).
+    # But some docs say it's RPM (one foot). The debug output showed 73.8 and 74.3.
+    # Normal running cadence is 150-180 spm. 74 spm is definitely RPM (one foot).
+    # So for Run, we might want to double it to get SPM (Steps Per Minute) which is standard.
+    # Cycling is RPM.
+    
+    if avg_cadence:
+        if type_ == "Run":
+            spm = avg_cadence * 2
+            description += f" Cadencia media: {spm:.0f} ppm."
+        else:
+             description += f" Cadencia media: {avg_cadence:.0f} rpm."
+
+    # Add Perceived Exertion
+    if perceived_exertion:
+        rpe_desc = get_rpe_description(perceived_exertion)
+        description += f" Sensación: {rpe_desc} ({perceived_exertion:.0f}/10)."
+
+    return description
 
 def get_existing_ids(filepath):
     """Reads existing activity IDs from the file to avoid duplicates."""
@@ -132,7 +196,7 @@ def get_existing_ids(filepath):
         print(f"Error reading existing file: {e}")
     return ids
 
-def save_activities(activities):
+def save_activities(activities, access_token):
     """Saves new activities to the file."""
     existing_ids = get_existing_ids(OUTPUT_FILE)
     
@@ -156,9 +220,32 @@ def save_activities(activities):
 
         act_id = str(activity.get('id'))
         if act_id not in existing_ids:
-            description = format_activity(activity)
+            
+            # Rate limit check specifically for detail fetch
+            # We check if we have budget for one more call
+            if API_CALLS >= MAX_API_CALLS:
+                print(f"Rate limit safety cap reached ({API_CALLS}). Stopping sync for now.")
+                print("Run the script again in 15 minutes to continue.")
+                break
+
+            # Fetch details for RPE if not present (it won't be in summary)
+            # We already have summary, let's clone it or just update it
+            
+            print(f"Fetching details for new activity {act_id}...")
+            detail = get_activity_detail(act_id, access_token)
+            
+            # Use detail if successful, otherwise fallback to summary
+            # We merge detail into activity so we keep any summary fields that might be useful (though detail usually has all)
+            full_activity = activity.copy()
+            if detail:
+                full_activity.update(detail)
+            
+            description = format_activity(full_activity)
             activities_to_add.append((act_id, description))
             existing_ids.add(act_id) # Update local set to preventing dupes in same batch
+            
+            # Sleep briefly to respect rate limits if syncing many
+            time.sleep(1)
 
     if not activities_to_add:
         print("No new activities to sync.")
@@ -193,7 +280,7 @@ def main():
         activities = get_activities(access_token, fetch_all=args.all)
         if activities:
             print(f"Fetched {len(activities)} activities.")
-            save_activities(activities)
+            save_activities(activities, access_token)
         else:
             print("No activities found or error fetching.")
     else:
