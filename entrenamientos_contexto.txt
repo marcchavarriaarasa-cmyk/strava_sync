@@ -247,3 +247,6 @@ El 05/02/2026 realicé una Run de 10.0km en 54 minutos con 60m de desnivel. Mi r
 <!-- ID: 17319292738 -->
 El 07/02/2026 realicé una Run de 11.0km en 58 minutos con 72m de desnivel. Mi ritmo medio fue de 5:19 min/km. Cadencia media: 148 ppm. Sensación: Moderado (6/10).
 
+<!-- ID: 17331544641 -->
+El 08/02/2026 realicé una Walk de 2.5km en 24 minutos con 0m de desnivel. Mi ritmo medio fue de 9:53 min/km. Cadencia media: 68 rpm. Sensación: Suave (2/10).
+
