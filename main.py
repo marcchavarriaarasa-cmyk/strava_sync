@@ -93,6 +93,19 @@ def get_activity_detail(activity_id, access_token):
         print(f"Error fetching detail for {activity_id}: {e}")
         return None
 
+def get_zones(activity_id, access_token):
+    """Fetches heart rate and pace zones for an activity."""
+    global API_CALLS
+    headers = {'Authorization': f"Bearer {access_token}"}
+    try:
+        response = requests.get(f"{API_URL}/activities/{activity_id}/zones", headers=headers)
+        API_CALLS += 1
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching zones for {activity_id}: {e}")
+        return []
+
 def get_rpe_description(rpe):
     """Maps RPE value (1-10) to a text description."""
     if not rpe:
@@ -131,6 +144,16 @@ def format_activity(activity):
     avg_cadence = activity.get('average_cadence')
     avg_heartrate = activity.get('average_heartrate')
     perceived_exertion = activity.get('perceived_exertion')
+    
+    # Check if we should add detailed info (Splits & Zones)
+    # Target ID: 17347409698. Future IDs will be larger.
+    show_details = False
+    try:
+        if activity.get('id') and int(activity.get('id')) >= 17347409698:
+            show_details = True
+    except (ValueError, TypeError):
+        pass
+
     
     # Conversions
     distance_km = distance_meters / 1000
@@ -179,6 +202,72 @@ def format_activity(activity):
     if perceived_exertion:
         rpe_desc = get_rpe_description(perceived_exertion)
         description += f" Sensación: {rpe_desc} ({perceived_exertion:.0f}/10)."
+
+    # Add Detailed Data (Splits and Zones) if applicable
+    if show_details:
+        # Splits
+        splits = activity.get('splits_metric', [])
+        if splits:
+            description += "\n\nDesglose por Km:"
+            for split in splits:
+                try:
+                    split_num = split.get('split')
+                    # format pace
+                    s_dist = split.get('distance', 1000) / 1000 # should be around 1km usually
+                    if s_dist > 0:
+                        s_pace = format_pace(split.get('moving_time', 0), s_dist)
+                    else:
+                        s_pace = "N/A"
+                    
+                    s_hr = split.get('average_heartrate')
+                    s_elev = split.get('elevation_difference', 0)
+                    
+                    line = f"- Km {split_num}: {s_pace}/km"
+                    if s_hr:
+                         line += f", {s_hr:.0f} ppm"
+                    
+                    elev_sign = "+" if s_elev >= 0 else ""
+                    line += f", {elev_sign}{s_elev:.0f}m"
+                    
+                    description += f"\n{line}"
+                except Exception:
+                    continue
+
+        # Zones
+        zones = activity.get('zones', [])
+        if zones:
+            for zone in zones:
+                z_type = zone.get('type') # 'heartrate' or 'pace'
+                buckets = zone.get('distribution_buckets', [])
+                if not buckets: continue
+                
+                if z_type == 'heartrate':
+                    description += "\n\nZonas de Frecuencia Cardíaca:"
+                elif z_type == 'pace':
+                    description += "\n\nZonas de Ritmo:"
+                else:
+                    continue
+                
+                total_time = sum(b.get('time', 0) for b in buckets)
+                if total_time == 0: continue
+
+                for i, b in enumerate(buckets):
+                    b_time = b.get('time', 0)
+                    if b_time == 0: continue
+                    
+                    pct = (b_time / total_time) * 100
+                    
+                    # Format time
+                    mins = int(b_time // 60)
+                    secs = int(b_time % 60)
+                    time_str = f"{mins}m {secs}s"
+                    
+                    # Range
+                    z_min = b.get('min')
+                    z_max = b.get('max')
+                    if z_max == -1: z_max = "+" # Open ended
+                    
+                    description += f"\n- Z{i+1} ({z_min}-{z_max}): {time_str} ({pct:.0f}%)"
 
     return description
 
@@ -277,6 +366,17 @@ def save_activities(activities, access_token):
         full_activity = activity.copy()
         if detail:
             full_activity.update(detail)
+            
+            # Fetch Zones if it's a target activity (>= 17347409698)
+            try:
+                if int(act_id) >= 17347409698:
+                    print(f"  -> Fetching zones for {act_id}...")
+                    zones = get_zones(act_id, access_token)
+                    if zones:
+                         full_activity['zones'] = zones
+            except (ValueError, TypeError):
+                pass
+
         
         new_description = format_activity(full_activity)
         
