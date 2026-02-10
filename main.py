@@ -129,6 +129,7 @@ def format_activity(activity):
     
     # New fields
     avg_cadence = activity.get('average_cadence')
+    avg_heartrate = activity.get('average_heartrate')
     perceived_exertion = activity.get('perceived_exertion')
     
     # Conversions
@@ -169,6 +170,10 @@ def format_activity(activity):
             description += f" Cadencia media: {spm:.0f} ppm."
         else:
              description += f" Cadencia media: {avg_cadence:.0f} rpm."
+
+    # Add Heart Rate
+    if avg_heartrate:
+         description += f" Frecuencia cardíaca media: {avg_heartrate:.0f} ppm."
 
     # Add Perceived Exertion
     if perceived_exertion:
