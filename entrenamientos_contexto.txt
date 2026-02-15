@@ -1,4 +1,48 @@
-Los cambios en <!-- ID: 17347409698 -->
+Los cambios en <!-- ID: 17396904991 -->
+El 14/02/2026 realicé una Run de 1.0km en 5 minutos con 13m de desnivel. Mi ritmo medio fue de 5:29 min/km. Cadencia media: 131 ppm. Frecuencia cardíaca media: 157 ppm. Sensación: Suave (3/10).
+
+Desglose por Km:
+- Km 1: 5:26/km, 156 ppm, +13m
+- Km 2: 7:59/km, 166 ppm, +1m
+
+Zonas de Frecuencia Cardíaca:
+- Z1 (0-129): 0m 9s (3%)
+- Z2 (130-160): 3m 15s (58%)
+- Z3 (161-176): 2m 11s (39%)
+
+Zonas de Ritmo:
+- Z1 (0-2.822): 0m 4s (1%)
+- Z2 (2.822-3.279): 3m 8s (56%)
+- Z3 (3.279-3.652): 1m 50s (33%)
+- Z4 (3.652-3.901): 0m 28s (8%)
+- Z5 (3.901-4.15): 0m 4s (1%)
+
+<!-- ID: 17396750659 -->
+El 14/02/2026 realicé una Pilates de 0.0km en 51 minutos con 0m de desnivel. Mi ritmo medio fue de N/A min/km. Frecuencia cardíaca media: 113 ppm. Sensación: Suave (3/10).
+
+Zonas de Frecuencia Cardíaca:
+- Z1 (0-129): 42m 23s (82%)
+- Z2 (130-160): 8m 53s (17%)
+- Z3 (161-176): 0m 18s (1%)
+
+<!-- ID: 17396087320 -->
+El 14/02/2026 realicé una Run de 1.0km en 4 minutos con 3m de desnivel. Mi ritmo medio fue de 4:21 min/km. Cadencia media: 138 ppm. Frecuencia cardíaca media: 164 ppm. Sensación: Moderado (4/10).
+
+Desglose por Km:
+- Km 1: 4:20/km, 164 ppm, -7m
+- Km 2: 5:33/km, 171 ppm, -0m
+
+Zonas de Frecuencia Cardíaca:
+- Z2 (130-160): 0m 46s (17%)
+- Z3 (161-176): 3m 39s (83%)
+
+Zonas de Ritmo:
+- Z3 (3.279-3.652): 1m 20s (30%)
+- Z4 (3.652-3.901): 1m 28s (33%)
+- Z5 (3.901-4.15): 0m 48s (18%)
+- Z6 (4.15-+): 0m 48s (18%)
+
+<!-- ID: 17347409698 -->
 El 10/02/2026 realicé una Run de 8.9km en 47 minutos con 28m de desnivel. Mi ritmo medio fue de 5:22 min/km. Cadencia media: 148 ppm. Frecuencia cardíaca media: 159 ppm. Sensación: Moderado (5/10).
 
 Desglose por Km:
