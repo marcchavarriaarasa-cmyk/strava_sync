@@ -1,4 +1,18 @@
-Los cambios en <!-- ID: 17402772375 -->
+Los cambios en <!-- ID: 17462902752 -->
+El 20/02/2026 realicé una Walk de 6.0km en 1h 0min con 0m de desnivel. Mi ritmo medio fue de 10:05 min/km. Cadencia media: 67 rpm. Frecuencia cardíaca media: 97 ppm. Sensación: Suave (3/10).
+
+Desglose por Km:
+- Km 1: 10:55/km, 86 ppm, +0m
+- Km 2: 10:15/km, 94 ppm, -0m
+- Km 3: 10:02/km, 94 ppm, -1m
+- Km 4: 9:34/km, 104 ppm, +1m
+- Km 5: 9:33/km, 107 ppm, +0m
+- Km 6: 10:27/km, 102 ppm, +0m
+
+Zonas de Frecuencia Cardíaca:
+- Z1 (0-129): 60m 14s (100%)
+
+<!-- ID: 17402772375 -->
 El 15/02/2026 realicé una Run de 21.3km en 1h 37min con 48m de desnivel. Mi ritmo medio fue de 4:34 min/km. Cadencia media: 146 ppm. Frecuencia cardíaca media: 176 ppm. Sensación: Duro (8/10).
 
 Desglose por Km:
