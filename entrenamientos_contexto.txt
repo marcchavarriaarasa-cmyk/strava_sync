@@ -1,4 +1,14 @@
-Los cambios en <!-- ID: 17927462161 -->
+Los cambios en <!-- ID: 17977619252 -->
+El 04/04/2026 realicé una Walk de 4.0km en 48 minutos con 31m de desnivel. Mi ritmo medio fue de 11:57 min/km. Cadencia media: 67 rpm. Sensación: Suave (3/10).
+
+Desglose por Km:
+- Km 1: 13:10/km, +6m
+- Km 2: 12:05/km, +9m
+- Km 3: 11:18/km, +4m
+- Km 4: 11:08/km, -9m
+- Km 5: 15:52/km, +0m
+
+<!-- ID: 17927462161 -->
 El 31/03/2026 realicé una Run de 7.4km en 42 minutos con 0m de desnivel. Mi ritmo medio fue de 5:42 min/km. Cadencia media: 146 ppm. Frecuencia cardíaca media: 162 ppm. Sensación: Moderado (6/10).
 
 Desglose por Km:
