@@ -1,4 +1,31 @@
-Los cambios en <!-- ID: 18263461658 -->
+Los cambios en <!-- ID: 18320284552 -->
+El 30/04/2026 realicé una Run de 7.5km en 43 minutos con 46m de desnivel. Mi ritmo medio fue de 5:45 min/km. Cadencia media: 145 ppm. Frecuencia cardíaca media: 160 ppm. Sensación: Moderado (6/10).
+
+Desglose por Km:
+- Km 1: 6:00/km, 144 ppm, +0m
+- Km 2: 5:52/km, 154 ppm, -14m
+- Km 3: 5:58/km, 157 ppm, -2m
+- Km 4: 5:50/km, 160 ppm, +2m
+- Km 5: 5:47/km, 162 ppm, +0m
+- Km 6: 5:35/km, 169 ppm, +14m
+- Km 7: 4:46/km, 172 ppm, -0m
+- Km 8: 6:44/km, 163 ppm, -1m
+
+Zonas de Frecuencia Cardíaca:
+- Z1 (0-129): 0m 46s (2%)
+- Z2 (130-160): 21m 57s (51%)
+- Z3 (161-176): 19m 45s (46%)
+- Z4 (177-192): 0m 48s (2%)
+
+Zonas de Ritmo:
+- Z1 (0-2.822): 17m 36s (41%)
+- Z2 (2.822-3.279): 19m 46s (46%)
+- Z3 (3.279-3.652): 4m 10s (10%)
+- Z4 (3.652-3.901): 0m 33s (1%)
+- Z5 (3.901-4.15): 0m 23s (1%)
+- Z6 (4.15-+): 0m 48s (2%)
+
+<!-- ID: 18263461658 -->
 El 26/04/2026 realicé una Tennis de 2.1km en 44 minutos con 0m de desnivel. Mi ritmo medio fue de 21:51 min/km. Frecuencia cardíaca media: 145 ppm. Sensación: Moderado (6/10).
 
 Desglose por Km:
