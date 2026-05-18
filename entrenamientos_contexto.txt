@@ -1,4 +1,46 @@
-Los cambios en <!-- ID: 18473000933 -->
+Los cambios en <!-- ID: 18539008831 -->
+El 17/05/2026 realicé una MountainBikeRide de 36.5km en 1h 41min con 116m de desnivel. Mi ritmo medio fue de 2:46 min/km. Sensación: Moderado (5/10).
+
+Desglose por Km:
+- Km 1: 3:02/km, +0m
+- Km 2: 2:59/km, -4m
+- Km 3: 2:37/km, -9m
+- Km 4: 2:44/km, -4m
+- Km 5: 2:46/km, +1m
+- Km 6: 3:00/km, +0m
+- Km 7: 2:56/km, +1m
+- Km 8: 2:54/km, +1m
+- Km 9: 2:30/km, +0m
+- Km 10: 2:57/km, +3m
+- Km 11: 2:37/km, -3m
+- Km 12: 2:16/km, +1m
+- Km 13: 2:31/km, +0m
+- Km 14: 2:37/km, +1m
+- Km 15: 2:49/km, +2m
+- Km 16: 3:13/km, -1m
+- Km 17: 2:41/km, +1m
+- Km 18: 3:25/km, -4m
+- Km 19: 3:55/km, +4m
+- Km 20: 2:30/km, -1m
+- Km 21: 2:40/km, +0m
+- Km 22: 2:26/km, -3m
+- Km 23: 2:17/km, -0m
+- Km 24: 2:19/km, +0m
+- Km 25: 2:35/km, -1m
+- Km 26: 2:44/km, +4m
+- Km 27: 2:40/km, -4m
+- Km 28: 2:37/km, +0m
+- Km 29: 2:50/km, -1m
+- Km 30: 2:35/km, -1m
+- Km 31: 2:51/km, +1m
+- Km 32: 2:48/km, -1m
+- Km 33: 2:53/km, +4m
+- Km 34: 3:09/km, +7m
+- Km 35: 2:45/km, +5m
+- Km 36: 2:58/km, +3m
+- Km 37: 3:08/km, -9m
+
+<!-- ID: 18473000933 -->
 El 12/05/2026 realicé una Run de 7.9km en 47 minutos con 26m de desnivel. Mi ritmo medio fue de 5:59 min/km. Frecuencia cardíaca media: 162 ppm. Sensación: Moderado (6/10).
 
 Desglose por Km:
