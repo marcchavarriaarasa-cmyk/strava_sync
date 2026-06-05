@@ -1,4 +1,32 @@
-Los cambios en <!-- ID: 18774538825 -->
+Los cambios en <!-- ID: 18787202837 -->
+El 04/06/2026 realicé una Run de 2.5km en 13 minutos con 6m de desnivel. Mi ritmo medio fue de 5:19 min/km. Sensación: Moderado (4/10).
+
+Desglose por Km:
+- Km 1: 5:25/km, -9m
+- Km 2: 5:23/km, -23m
+- Km 3: 5:03/km, -10m
+
+Zonas de Ritmo:
+- Z1 (0-2.822): 0m 35s (4%)
+- Z2 (2.822-3.279): 12m 0s (89%)
+- Z3 (3.279-3.652): 0m 56s (7%)
+
+<!-- ID: 18785615424 -->
+El 04/06/2026 realicé una Run de 2.2km en 11 minutos con 42m de desnivel. Mi ritmo medio fue de 5:05 min/km. Sensación: Moderado (5/10).
+
+Desglose por Km:
+- Km 1: 5:01/km, +19m
+- Km 2: 5:01/km, +20m
+- Km 3: 5:43/km, -4m
+
+Zonas de Ritmo:
+- Z1 (0-2.822): 0m 36s (5%)
+- Z2 (2.822-3.279): 0m 58s (8%)
+- Z3 (3.279-3.652): 6m 43s (59%)
+- Z4 (3.652-3.901): 2m 43s (24%)
+- Z5 (3.901-4.15): 0m 23s (3%)
+
+<!-- ID: 18774538825 -->
 El 03/06/2026 realicé una Run de 2.5km en 11 minutos con 4m de desnivel. Mi ritmo medio fue de 4:39 min/km. Sensación: Moderado (4/10).
 
 Desglose por Km:
