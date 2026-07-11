@@ -1,9 +1,13 @@
 import requests
 import os
+import sys
 import time
 import argparse
+import tempfile
 from datetime import datetime
 from dotenv import load_dotenv
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 # Load environment variables
 load_dotenv()
@@ -20,9 +24,60 @@ OUTPUT_FILE = "entrenamientos_contexto.txt"
 # Rate Limit Safety
 API_CALLS = 0
 MAX_API_CALLS = 80
+REQUEST_TIMEOUT = (10, 30)
+
+
+class StravaSyncError(RuntimeError):
+    """Raised when a sync cannot be completed without risking partial data."""
+
+
+def build_session():
+    retry = Retry(
+        total=4,
+        connect=4,
+        read=4,
+        status=4,
+        backoff_factor=1,
+        status_forcelist=(403, 429, 500, 502, 503, 504),
+        allowed_methods=frozenset({'GET', 'POST'}),
+        respect_retry_after_header=True,
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session = requests.Session()
+    session.mount('https://', adapter)
+    return session
+
+
+SESSION = build_session()
+
+
+def require_credentials():
+    missing = [
+        name for name, value in (
+            ('STRAVA_CLIENT_ID', CLIENT_ID),
+            ('STRAVA_CLIENT_SECRET', CLIENT_SECRET),
+            ('STRAVA_REFRESH_TOKEN', REFRESH_TOKEN),
+        ) if not value
+    ]
+    if missing:
+        raise StravaSyncError(
+            f"Missing environment variables: {', '.join(missing)}. "
+            "Configure them in .env or as GitHub Repository Secrets."
+        )
+
+
+def reserve_api_call():
+    global API_CALLS
+    if API_CALLS >= MAX_API_CALLS:
+        raise StravaSyncError(
+            f"Rate limit safety cap reached ({MAX_API_CALLS} API calls). "
+            "No output file was changed."
+        )
+    API_CALLS += 1
 
 def get_access_token():
     """Refreshes the access token using the refresh token."""
+    require_credentials()
     payload = {
         'client_id': CLIENT_ID,
         'client_secret': CLIENT_SECRET,
@@ -31,13 +86,20 @@ def get_access_token():
     }
     
     try:
-        response = requests.post(AUTH_URL, data=payload)
+        reserve_api_call()
+        response = SESSION.post(AUTH_URL, data=payload, timeout=REQUEST_TIMEOUT)
         response.raise_for_status()
         token_data = response.json()
+        if not token_data.get('access_token'):
+            raise StravaSyncError('Strava token response did not include an access token.')
         return token_data['access_token']
-    except requests.exceptions.RequestException as e:
-        print(f"Error refreshing token: {e}")
-        return None
+    except (requests.exceptions.RequestException, ValueError) as error:
+        detail = getattr(locals().get('response'), 'text', '')
+        if detail:
+            detail = f" Response: {detail[:500]}"
+        raise StravaSyncError(
+            f"Unable to refresh the Strava token: {error}.{detail}"
+        ) from error
 
 def get_activities(access_token, fetch_all=False, limit=10):
     """
@@ -52,15 +114,16 @@ def get_activities(access_token, fetch_all=False, limit=10):
     per_page = 200 if fetch_all else limit
     
     while True:
-        if API_CALLS >= MAX_API_CALLS:
-            print(f"Rate limit safety cap reached ({API_CALLS}). Stopping fetch.")
-            break
-
         params = {'per_page': per_page, 'page': page}
         try:
             print(f"Fetching page {page}...")
-            response = requests.get(f"{API_URL}/athlete/activities", headers=headers, params=params)
-            API_CALLS += 1
+            reserve_api_call()
+            response = SESSION.get(
+                f"{API_URL}/athlete/activities",
+                headers=headers,
+                params=params,
+                timeout=REQUEST_TIMEOUT,
+            )
             response.raise_for_status()
             batch = response.json()
             
@@ -74,37 +137,48 @@ def get_activities(access_token, fetch_all=False, limit=10):
                 
             page += 1
             
-        except requests.exceptions.RequestException as e:
-            print(f"Error fetching activities on page {page}: {e}")
-            break
+        except (requests.exceptions.RequestException, ValueError) as error:
+            raise StravaSyncError(
+                f"Unable to fetch activities on page {page}: {error}"
+            ) from error
             
     return activities
 
 def get_activity_detail(activity_id, access_token):
     """Fetches detailed activity data to get fields like perceived_exertion."""
-    global API_CALLS
     headers = {'Authorization': f"Bearer {access_token}"}
     try:
-        response = requests.get(f"{API_URL}/activities/{activity_id}", headers=headers)
-        API_CALLS += 1
+        reserve_api_call()
+        response = SESSION.get(
+            f"{API_URL}/activities/{activity_id}",
+            headers=headers,
+            timeout=REQUEST_TIMEOUT,
+        )
         response.raise_for_status()
         return response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching detail for {activity_id}: {e}")
-        return None
+    except (requests.exceptions.RequestException, ValueError) as error:
+        raise StravaSyncError(
+            f"Unable to fetch details for activity {activity_id}: {error}"
+        ) from error
 
 def get_zones(activity_id, access_token):
     """Fetches heart rate and pace zones for an activity."""
-    global API_CALLS
     headers = {'Authorization': f"Bearer {access_token}"}
     try:
-        response = requests.get(f"{API_URL}/activities/{activity_id}/zones", headers=headers)
-        API_CALLS += 1
+        reserve_api_call()
+        response = SESSION.get(
+            f"{API_URL}/activities/{activity_id}/zones",
+            headers=headers,
+            timeout=REQUEST_TIMEOUT,
+        )
+        if response.status_code == 404:
+            return []
         response.raise_for_status()
         return response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching zones for {activity_id}: {e}")
-        return []
+    except (requests.exceptions.RequestException, ValueError) as error:
+        raise StravaSyncError(
+            f"Unable to fetch zones for activity {activity_id}: {error}"
+        ) from error
 
 def get_rpe_description(rpe):
     """Maps RPE value (1-10) to a text description."""
@@ -160,9 +234,9 @@ def format_activity(activity):
     
     # Format date (e.g., 2026-02-07T10:00:00Z -> 07/02/2026)
     try:
-        date_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%SZ")
+        date_obj = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
         formatted_date = date_obj.strftime("%d/%m/%Y")
-    except ValueError:
+    except (ValueError, TypeError):
         formatted_date = date_str
 
     # Format time
@@ -334,22 +408,6 @@ def save_activities(activities, access_token):
 
         act_id = str(activity.get('id'))
         
-        # Rate limit check for optimization
-        # Since we ALWAYS fetch details now to update descriptions (like RPE),
-        # we need to be careful.
-        # But wait, checking for updates requires fetching details, because the summary
-        # doesn't have RPE.
-        
-        # Optimization: Only fetch details if we need to.
-        # But we don't know if we need to update without fetching details first to compare.
-        # Strava limit is generous enough for manual daily syncs (10 activities * 1 = 10 calls).
-        # Daily limit is 1000. 15-min is 100.
-        # If we fetch 10 recent activities, that's 10 detail calls. Safe.
-        
-        if API_CALLS >= MAX_API_CALLS:
-            print(f"Rate limit safety cap reached ({API_CALLS}). Stopping sync for now.")
-            break
-
         # Check if we already have it to decide on logging
         is_update = act_id in existing_activities
         
@@ -364,18 +422,17 @@ def save_activities(activities, access_token):
         detail = get_activity_detail(act_id, access_token)
         
         full_activity = activity.copy()
-        if detail:
-            full_activity.update(detail)
-            
-            # Fetch Zones if it's a target activity (>= 17347409698)
-            try:
-                if int(act_id) >= 17347409698:
-                    print(f"  -> Fetching zones for {act_id}...")
-                    zones = get_zones(act_id, access_token)
-                    if zones:
-                         full_activity['zones'] = zones
-            except (ValueError, TypeError):
-                pass
+        full_activity.update(detail)
+
+        # Fetch Zones if it's a target activity (>= 17347409698)
+        try:
+            if int(act_id) >= 17347409698:
+                print(f"  -> Fetching zones for {act_id}...")
+                zones = get_zones(act_id, access_token)
+                if zones:
+                    full_activity['zones'] = zones
+        except (ValueError, TypeError):
+            pass
 
         
         new_description = format_activity(full_activity)
@@ -404,39 +461,49 @@ def save_activities(activities, access_token):
     # Sort activities by newest first (descending ID)
     sorted_activities = sorted(existing_activities.items(), key=lambda x: int(x[0]), reverse=True)
 
+    temp_path = None
     try:
-        with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
+        output_dir = os.path.dirname(OUTPUT_FILE) or '.'
+        with tempfile.NamedTemporaryFile(
+            mode='w', encoding='utf-8', dir=output_dir, delete=False
+        ) as f:
+            temp_path = f.name
             f.write(header)
             for act_id, description in sorted_activities:
                 f.write(f"<!-- ID: {act_id} -->\n")
                 f.write(f"{description}\n\n")
+        os.replace(temp_path, OUTPUT_FILE)
+        temp_path = None
         print("File updated successfully.")
                 
-    except IOError as e:
-        print(f"Error writing to file: {e}")
+    except IOError as error:
+        raise StravaSyncError(f"Unable to write {OUTPUT_FILE}: {error}") from error
+    finally:
+        if temp_path and os.path.exists(temp_path):
+            os.unlink(temp_path)
 
 def main():
+    global API_CALLS
+    API_CALLS = 0
     parser = argparse.ArgumentParser(description="Strava Activity Sync")
     parser.add_argument("--all", action="store_true", help="Fetch all historical activities (pagination)")
     args = parser.parse_args()
 
     print("Starting Strava Sync...")
     
-    if not all([CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN]):
-        print("Error: Missing credentials. Please check your .env file.")
-        return
-
-    access_token = get_access_token()
-    if access_token:
+    try:
+        access_token = get_access_token()
         print("Authentication successful.")
         activities = get_activities(access_token, fetch_all=args.all)
         if activities:
             print(f"Fetched {len(activities)} activities.")
             save_activities(activities, access_token)
         else:
-            print("No activities found or error fetching.")
-    else:
-        print("Authentication failed.")
+            print("No activities found.")
+        return 0
+    except StravaSyncError as error:
+        print(f"Error: {error}", file=sys.stderr)
+        return 1
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
