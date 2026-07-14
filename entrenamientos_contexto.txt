@@ -1,4 +1,15 @@
-Los cambios en <!-- ID: 19284751070 -->
+Los cambios en <!-- ID: 19298457100 -->
+El 13/07/2026 realicé una Run de 0.6km en 5 minutos con 20m de desnivel. Mi ritmo medio fue de 8:58 min/km. Sensación: Duro (8/10).
+
+Desglose por Km:
+- Km 1: 8:56/km, +1m
+
+Zonas de Ritmo:
+- Z1 (0-2.822): 1m 11s (28%)
+- Z2 (2.822-3.279): 1m 55s (46%)
+- Z3 (3.279-3.652): 1m 4s (26%)
+
+<!-- ID: 19284751070 -->
 El 12/07/2026 realicé una Ride de 17.7km en 54 minutos con 44m de desnivel. Mi ritmo medio fue de 3:06 min/km. Frecuencia cardíaca media: 142 ppm. Sensación: Moderado (6/10).
 
 Desglose por Km:
