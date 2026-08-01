@@ -1,4 +1,27 @@
-Los cambios en <!-- ID: 19533176216 -->
+Los cambios en <!-- ID: 19545385422 -->
+El 31/07/2026 realicé una Ride de 17.7km en 54 minutos con 37m de desnivel. Mi ritmo medio fue de 3:04 min/km. Sensación: Moderado (6/10).
+
+Desglose por Km:
+- Km 1: 3:16/km, -9m
+- Km 2: 2:40/km, -3m
+- Km 3: 2:56/km, +0m
+- Km 4: 3:07/km, +0m
+- Km 5: 3:27/km, -0m
+- Km 6: 3:12/km, +1m
+- Km 7: 3:18/km, -2m
+- Km 8: 3:20/km, -0m
+- Km 9: 3:31/km, +1m
+- Km 10: 3:01/km, +0m
+- Km 11: 3:00/km, -0m
+- Km 12: 2:32/km, +1m
+- Km 13: 3:16/km, +5m
+- Km 14: 3:14/km, -0m
+- Km 15: 3:04/km, +7m
+- Km 16: 2:15/km, -6m
+- Km 17: 2:28/km, +8m
+- Km 18: 4:04/km, -10m
+
+<!-- ID: 19533176216 -->
 El 30/07/2026 realicé una Run de 10.1km en 59 minutos con 42m de desnivel. Mi ritmo medio fue de 5:54 min/km. Sensación: Duro (7/10).
 
 Desglose por Km:
