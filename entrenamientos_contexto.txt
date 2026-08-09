@@ -1,4 +1,21 @@
-Los cambios en <!-- ID: 19630117704 -->
+Los cambios en <!-- ID: 19648989347 -->
+El 08/08/2026 realicé una Run de 3.3km en 20 minutos con 8m de desnivel. Mi ritmo medio fue de 6:09 min/km.
+
+Desglose por Km:
+- Km 1: 5:35/km, +4m
+- Km 2: 5:48/km, -0m
+- Km 3: 6:50/km, -3m
+- Km 4: 7:02/km, -2m
+
+Zonas de Ritmo:
+- Z1 (0-2.822): 6m 50s (37%)
+- Z2 (2.822-3.279): 6m 46s (36%)
+- Z3 (3.279-3.652): 3m 12s (17%)
+- Z4 (3.652-3.901): 1m 8s (6%)
+- Z5 (3.901-4.15): 0m 19s (2%)
+- Z6 (4.15-+): 0m 24s (2%)
+
+<!-- ID: 19630117704 -->
 El 06/08/2026 realicé una Run de 10.0km en 56 minutos con 51m de desnivel. Mi ritmo medio fue de 5:35 min/km. Frecuencia cardíaca media: 172 ppm. Sensación: Muy duro (9/10).
 
 Desglose por Km:
