@@ -1,4 +1,14 @@
-Los cambios en <!-- ID: 19771555258 -->
+Los cambios en <!-- ID: 19815081741 -->
+El 11/08/2026 realicé una Hike de 0.7km en 7 minutos con 0m de desnivel. Mi ritmo medio fue de 10:13 min/km. Frecuencia cardíaca media: 125 ppm.
+
+Desglose por Km:
+- Km 1: 10:13/km, 125 ppm, -0m
+
+Zonas de Frecuencia Cardíaca:
+- Z1 (0-128): 6m 15s (87%)
+- Z2 (129-160): 0m 54s (13%)
+
+<!-- ID: 19771555258 -->
 El 16/08/2026 realicé una Run de 7.0km en 36 minutos con 33m de desnivel. Mi ritmo medio fue de 5:14 min/km. Frecuencia cardíaca media: 166 ppm. Sensación: Moderado (6/10).
 
 Desglose por Km:
