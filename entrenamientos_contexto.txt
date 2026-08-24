@@ -1,4 +1,25 @@
-Los cambios en <!-- ID: 19827820029 -->
+Los cambios en <!-- ID: 19869401238 -->
+El 23/08/2026 realicé una MountainBikeRide de 15.3km en 1h 4min con 266m de desnivel. Mi ritmo medio fue de 4:12 min/km. Sensación: Duro (7/10).
+
+Desglose por Km:
+- Km 1: 4:48/km, +39m
+- Km 2: 6:12/km, +56m
+- Km 3: 3:48/km, -7m
+- Km 4: 5:20/km, -0m
+- Km 5: 6:29/km, +67m
+- Km 6: 4:24/km, -40m
+- Km 7: 2:04/km, -57m
+- Km 8: 1:54/km, -54m
+- Km 9: 3:07/km, -4m
+- Km 10: 5:33/km, -7m
+- Km 11: 4:26/km, -1m
+- Km 12: 6:16/km, +1m
+- Km 13: 2:42/km, +2m
+- Km 14: 3:05/km, -0m
+- Km 15: 3:30/km, +7m
+- Km 16: 7:37/km, -5m
+
+<!-- ID: 19827820029 -->
 El 20/08/2026 realicé una Run de 6.0km en 38 minutos con 36m de desnivel. Mi ritmo medio fue de 6:24 min/km. Sensación: Moderado (6/10).
 
 Desglose por Km:
