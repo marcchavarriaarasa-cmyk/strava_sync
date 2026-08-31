@@ -1,4 +1,35 @@
-Los cambios en <!-- ID: 19939403235 -->
+Los cambios en <!-- ID: 19958635003 -->
+El 30/08/2026 realicé una Run de 3.7km en 16 minutos con 8m de desnivel. Mi ritmo medio fue de 4:32 min/km. Sensación: Duro (8/10).
+
+Desglose por Km:
+- Km 1: 4:33/km, +1m
+- Km 2: 4:38/km, +2m
+- Km 3: 4:39/km, +6m
+- Km 4: 4:13/km, -7m
+
+Zonas de Ritmo:
+- Z3 (3.279-3.652): 9m 45s (58%)
+- Z4 (3.652-3.901): 5m 24s (32%)
+- Z5 (3.901-4.15): 1m 5s (6%)
+- Z6 (4.15-+): 0m 35s (3%)
+
+<!-- ID: 19958459246 -->
+El 30/08/2026 realicé una MountainBikeRide de 10.7km en 29 minutos con 136m de desnivel. Mi ritmo medio fue de 2:43 min/km. Sensación: Duro (8/10).
+
+Desglose por Km:
+- Km 1: 2:26/km, +6m
+- Km 2: 3:53/km, +39m
+- Km 3: 3:17/km, +25m
+- Km 4: 3:41/km, +34m
+- Km 5: 3:49/km, +31m
+- Km 6: 2:28/km, +1m
+- Km 7: 2:21/km, +0m
+- Km 8: 1:42/km, -57m
+- Km 9: 1:33/km, -45m
+- Km 10: 2:05/km, -33m
+- Km 11: 3:08/km, -4m
+
+<!-- ID: 19939403235 -->
 El 28/08/2026 realicé una Run de 8.2km en 46 minutos con 50m de desnivel. Mi ritmo medio fue de 5:41 min/km. Frecuencia cardíaca media: 151 ppm. Sensación: Moderado (5/10).
 
 Desglose por Km:
