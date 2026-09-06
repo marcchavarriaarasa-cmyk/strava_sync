@@ -1,4 +1,33 @@
-Los cambios en <!-- ID: 19958635003 -->
+Los cambios en <!-- ID: 20050841809 -->
+El 05/09/2026 realicé una Run de 10.0km en 51 minutos con 50m de desnivel. Mi ritmo medio fue de 5:07 min/km. Frecuencia cardíaca media: 166 ppm. Sensación: Duro (7/10).
+
+Desglose por Km:
+- Km 1: 5:21/km, 143 ppm, -4m
+- Km 2: 5:02/km, 157 ppm, +0m
+- Km 3: 4:50/km, 165 ppm, -0m
+- Km 4: 5:02/km, 166 ppm, -3m
+- Km 5: 5:15/km, 167 ppm, -0m
+- Km 6: 5:11/km, 171 ppm, +0m
+- Km 7: 5:13/km, 172 ppm, +8m
+- Km 8: 5:10/km, 172 ppm, -5m
+- Km 9: 5:18/km, 173 ppm, +0m
+- Km 10: 4:50/km, 178 ppm, -3m
+- Km 11: 6:27/km, 176 ppm, -0m
+
+Zonas de Frecuencia Cardíaca:
+- Z1 (0-128): 0m 3s (0%)
+- Z2 (129-160): 9m 41s (19%)
+- Z3 (161-175): 37m 4s (72%)
+- Z4 (176-191): 4m 41s (9%)
+
+Zonas de Ritmo:
+- Z1 (0-2.822): 0m 27s (1%)
+- Z2 (2.822-3.279): 31m 54s (62%)
+- Z3 (3.279-3.652): 17m 42s (34%)
+- Z4 (3.652-3.901): 0m 58s (2%)
+- Z5 (3.901-4.15): 0m 28s (1%)
+
+<!-- ID: 19958635003 -->
 El 30/08/2026 realicé una Run de 3.7km en 16 minutos con 8m de desnivel. Mi ritmo medio fue de 4:32 min/km. Sensación: Duro (8/10).
 
 Desglose por Km:
