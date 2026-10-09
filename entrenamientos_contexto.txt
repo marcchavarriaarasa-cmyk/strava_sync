@@ -1,4 +1,26 @@
-Los cambios en <!-- ID: 20484899474 -->
+Los cambios en <!-- ID: 20501990201 -->
+El 08/10/2026 realicé una Hike de 16.7km en 3h 34min con 609m de desnivel. Mi ritmo medio fue de 12:51 min/km. Sensación: Moderado (5/10).
+
+Desglose por Km:
+- Km 1: 12:58/km, -7m
+- Km 2: 14:39/km, +77m
+- Km 3: 14:20/km, +98m
+- Km 4: 12:36/km, -91m
+- Km 5: 12:51/km, +79m
+- Km 6: 15:22/km, +50m
+- Km 7: 11:45/km, +0m
+- Km 8: 10:17/km, +8m
+- Km 9: 11:11/km, +20m
+- Km 10: 13:19/km, +117m
+- Km 11: 10:31/km, -114m
+- Km 12: 16:08/km, -104m
+- Km 13: 16:13/km, -136m
+- Km 14: 12:53/km, +1m
+- Km 15: 12:12/km, +7m
+- Km 16: 10:32/km, -13m
+- Km 17: 9:40/km, +4m
+
+<!-- ID: 20484899474 -->
 El 07/10/2026 realicé una Run de 5.3km en 32 minutos con 12m de desnivel. Mi ritmo medio fue de 6:04 min/km. Sensación: Suave (3/10).
 
 Desglose por Km:
