@@ -1,4 +1,38 @@
-Los cambios en <!-- ID: 20518947228 -->
+Los cambios en <!-- ID: 20531586490 -->
+El 10/10/2026 realicé una Hike de 28.4km en 3h 32min con 511m de desnivel. Mi ritmo medio fue de 7:28 min/km. Sensación: Moderado (4/10).
+
+Desglose por Km:
+- Km 1: 9:58/km, +48m
+- Km 2: 14:47/km, +47m
+- Km 3: 11:30/km, +51m
+- Km 4: 10:23/km, +36m
+- Km 5: 19:29/km, -11m
+- Km 6: 10:11/km, -74m
+- Km 7: 14:24/km, -118m
+- Km 8: 9:52/km, +1m
+- Km 9: 9:27/km, -3m
+- Km 10: 15:58/km, +1m
+- Km 11: 9:14/km, +0m
+- Km 12: 10:02/km, +2m
+- Km 13: 10:54/km, +1m
+- Km 14: 12:17/km, +26m
+- Km 15: 14:21/km, +63m
+- Km 16: 15:56/km, +82m
+- Km 17: 10:14/km, +32m
+- Km 18: 10:13/km, -67m
+- Km 19: 9:08/km, -64m
+- Km 20: 11:04/km, -69m
+- Km 21: 8:44/km, -7m
+- Km 22: 9:05/km, -12m
+- Km 23: 9:53/km, -2m
+- Km 24: 9:41/km, +5m
+- Km 25: 4:26/km, -7m
+- Km 26: 0:46/km, -2m
+- Km 27: 0:38/km, -7m
+- Km 28: 0:53/km, +5m
+- Km 29: 1:10/km, +5m
+
+<!-- ID: 20518947228 -->
 El 09/10/2026 realicé una Walk de 8.1km en 1h 44min con 49m de desnivel. Mi ritmo medio fue de 12:51 min/km. Sensación: Suave (2/10).
 
 Desglose por Km:
