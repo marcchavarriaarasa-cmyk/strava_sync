@@ -1,4 +1,40 @@
-Los cambios en <!-- ID: 20663644261 -->
+Los cambios en <!-- ID: 20711084437 -->
+El 24/10/2026 realicé una Ride de 25.2km en 1h 26min con 3m de desnivel. Mi ritmo medio fue de 3:26 min/km. Frecuencia cardíaca media: 139 ppm. Sensación: Suave (3/10).
+
+Desglose por Km:
+- Km 1: 2:52/km, 133 ppm, -1m
+- Km 2: 2:50/km, 134 ppm, -0m
+- Km 3: 3:11/km, 140 ppm, +1m
+- Km 4: 3:07/km, 141 ppm, +0m
+- Km 5: 2:50/km, 142 ppm, +0m
+- Km 6: 3:06/km, 138 ppm, -0m
+- Km 7: 3:09/km, 130 ppm, +1m
+- Km 8: 3:06/km, 142 ppm, -1m
+- Km 9: 3:02/km, 155 ppm, +0m
+- Km 10: 3:21/km, 134 ppm, +0m
+- Km 11: 3:12/km, 132 ppm, -1m
+- Km 12: 3:34/km, 129 ppm, +1m
+- Km 13: 3:07/km, 141 ppm, -0m
+- Km 14: 5:29/km, 136 ppm, +0m
+- Km 15: 3:17/km, 144 ppm, -0m
+- Km 16: 3:17/km, 146 ppm, +0m
+- Km 17: 3:02/km, 148 ppm, -1m
+- Km 18: 3:09/km, 153 ppm, +0m
+- Km 19: 6:36/km, 121 ppm, -0m
+- Km 20: 3:10/km, 125 ppm, -0m
+- Km 21: 3:53/km, 135 ppm, +0m
+- Km 22: 3:44/km, 140 ppm, -0m
+- Km 23: 3:08/km, 138 ppm, +1m
+- Km 24: 3:10/km, 146 ppm, -0m
+- Km 25: 2:44/km, 158 ppm, +0m
+- Km 26: 7:08/km, 154 ppm, +0m
+
+Zonas de Frecuencia Cardíaca:
+- Z1 (0-116): 3m 18s (4%)
+- Z2 (117-154): 72m 56s (88%)
+- Z3 (155-172): 7m 0s (8%)
+
+<!-- ID: 20663644261 -->
 El 20/10/2026 realicé una Run de 12.0km en 1h 0min con 50m de desnivel. Mi ritmo medio fue de 5:03 min/km. Frecuencia cardíaca media: 167 ppm. Sensación: Duro (7/10).
 
 Desglose por Km:
